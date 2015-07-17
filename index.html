@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.leftColumn {
+  width: 40%;
+  float: left;
+}
+
+.rightColumn {
+  width: 40%;
+  float: right;
+}
+
+</style>
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="jquery-1.11.3.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+//jquery function. Appends new div to hold new video
+	  function addVidToQueueB(divId){
+	  var borderColor = "border:8px solid #43C6DB";
+	  var vidId = document.getElementsByName('leftInput')[0].value;
+	  	$(".addVid").append('<div class="leftColumn" style="padding:3px; background-color:#43C6DB;" width="500" height="410" id="' + divId + '"></div>'); 
+
+	  	  divId = new YT.Player(divId, {
+          height: '390',
+          width: '640',
+          videoId: vidId,
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }			
+		});	
+	  }
+	  function addVidToQueueG(divId){
+	  var borderColor = "border:8px solid #FAAFBE";
+	  var vidId = document.getElementsByName('leftInput')[0].value;	  
+	  	$(".addVid").append('<div class="rightColumn" style="padding:3px; background-color:#FAAFBE;" width="500" height="410" id="' + divId + '"></div>'); 
+
+	  	  divId = new YT.Player(divId, {
+          height: '390',
+          width: '640',
+          videoId: vidId,
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }			
+		});	
+	  }
+	  function generateVidId(){
+		var x = Math.random();
+		var id = String(x);
+		return id; 
+	  }
+</script>
+</head>
+ <body>
+ <div class = "container">
+	<div class="jumbotron">
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+	<span class="pull-left">
+	 <input type="text" name="leftInput" id="leftInput">
+	 <button class="btn btn-default" type="button" onclick="addVidToQueueB(generateVidId())">Enter ID</button> </span>
+	 
+	 <span class="pull-right">
+	 <input type="text" name="rightInput" id="rightInput">
+	 <button class="btn btn-default" type="button" onclick="addVidToQueueG(generateVidId())">Enter ID</button> </span>
+	 <br />
+	 </div>
+	 
+	 <div class="row marketing"><div class = "addVid"></div></div>
+
+	<script id="player">
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+ 
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        event.target.playVideo();
+
+      }
+			
+	  // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 6000);
+          done = true;
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+    </script>
+</div>
+  </body>
+</html>
